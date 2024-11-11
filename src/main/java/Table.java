@@ -208,7 +208,11 @@ public class Table
 
         List <Comparable []> rows = new ArrayList <> ();
 
-        //  T O   B E   I M P L E M E N T E D 
+        //  T O   B E   I M P L E M E N T E D
+        Comparable[] row = index.get(keyVal);
+        if (row != null) {
+            rows.add(row);
+        }
 
         return new Table (name + count++, attribute, domain, key, rows);
     } // select
