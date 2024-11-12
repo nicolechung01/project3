@@ -9,7 +9,10 @@ package src.main.java;
 import static java.lang.System.out;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /*****************************************************************************************
  * This class tests the TupleGenerator on the Student Registration Database defined in the

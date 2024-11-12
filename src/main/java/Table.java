@@ -278,8 +278,56 @@ public class Table
                                                + table2.name + ")");
         //  T O   B E   I M P L E M E N T E D 
 
-        return null;
+        List<Comparable[]> rows = new ArrayList<>();
 
+        // retrieving attributes
+        String[] t_attrs = attributes1.split(" ");
+        String[] u_attrs = attributes2.split(" ");
+
+        // check if join possible
+        if (t_attrs.length != u_attrs.length) {
+			System.out.println("Cannot Perform Join Operator");
+			return null;
+		}
+
+        //build index on u_attrs from table 2
+        for (Comparable[] tuple : table2.tuples) {
+            Comparable[] key = table2.extract(tuple, u_attrs); // makes key for every tuple
+            KeyType indexKey = new KeyType(key);
+            table2.index.put(indexKey, tuple); // adds key as index entry
+        }
+
+        // iterate through all tuples in this table
+        for (Comparable[] tuple1 : tuples) {
+            // get key
+            Comparable[] key = this.extract(tuple1, t_attrs);
+            KeyType indexKey = new KeyType(key);
+            
+            // use index
+            Comparable[] matchingTuple = table2.index.get(indexKey);
+
+            if (matchingTuple != null) {
+                Comparable[] joinedTuple = ArrayUtil.concat(tuple1, matchingTuple);
+                rows.add(joinedTuple);
+            }
+        }
+
+        // Disambiguate attribute names by append "2" to the end of any duplicate attribute name.
+		// Here we just need to rename the attribute names in table2 then concatenate them to those in table1 
+		String[] attribute2_new = table2.attribute;
+		
+		for (int j = 0; j < t_attrs.length; j++) {
+			for (int k = 0; k < attribute2_new.length; ++k) {
+				
+				if (attribute2_new[k].equals(t_attrs[j])) {
+					
+					String tmp_attri = t_attrs[j] + "2"; 
+					attribute2_new[k] = tmp_attri;
+				}
+			}
+		}
+		
+		return new Table (name + count++, ArrayUtil.concat (attribute, attribute2_new), ArrayUtil.concat (domain, table2.domain), key, rows);
     }
 
     /************************************************************************************
