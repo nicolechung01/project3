@@ -8,6 +8,9 @@ package src.main.java;
 
 import static java.lang.System.out;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /*****************************************************************************************
  * This class tests the TupleGenerator on the Student Registration Database defined in the
  * Kifer, Bernstein and Lewis 2006 database textbook (see figure 3.6).  The primary keys
@@ -58,19 +61,70 @@ public class TestTupleGenerator
 
         var tables = new String [] { "Student", "Professor", "Course", "Teaching", "Transcript" };
         var tups   = new int [] { 10000, 1000, 2000, 50000, 5000 };
+        String[][] tableAttributes = {
+            {"id name address status"},
+            {"id name deptId"},
+            {"crsCode deptId crsName descr"},
+            {"crsCode semester profId"},
+            {"studId crsCode semester grade"}
+        };
+        Class[][] tableDomains = {
+            {Integer.class, String.class, String.class, String.class},
+            {Integer.class, String.class, String.class},
+            {String.class, String.class, String.class, String.class},
+            {String.class, String.class, Integer.class},
+            {Integer.class, String.class, String.class, String.class},
+        };
+        String[][] tableKeys = {
+            {"id"},
+            {"id"},
+            {"crsCode"},
+            {"crsCode semester"},
+            {"studId crsCode semester"}
+        };
     
         var resultTest = test.generate (tups);
-        
-        for (var i = 0; i < resultTest.length; i++) {
-            out.println (tables [i]);
-            for (var j = 0; j < resultTest [i].length; j++) {
-                for (var k = 0; k < resultTest [i][j].length; k++) {
-                    out.print (resultTest [i][j][k] + ",");
+
+        // list containing all tables created
+        List<Table> tableObjects = new ArrayList<>();
+
+        for (var i = 0; i < resultTest.length; i++) { // iterate through each table
+            // getting table meta data
+            String tableName = tables[i];
+            String[] attribute = tableAttributes[i];
+            Class[] domain = tableDomains[i];
+            String[] key = tableKeys[i];
+            // creating list of rows for each table
+            List <Comparable []> rows = new ArrayList <> ();
+            for (var j = 0; j < resultTest[i].length; j++) {
+                Comparable[] tuple = new Comparable[resultTest[i][j].length]; // creating tuple object
+                for (var k = 0; k < resultTest[i][j].length; k++) {
+                    tuple[k] = resultTest[i][j][k]; // populate tuple with values
                 } // for
-                out.println ();
+                rows.add(tuple);
             } // for
-            out.println ();
-        } // for
+            // creating table then adding table to tableObjects
+            Table table = new Table(tableName, attribute, domain, key, rows);
+            tableObjects.add(table);
+        }
+
+        // // for printing tables to verify
+        // for (Table table: tableObjects) {
+        //     table.print();
+        // }
+        
+        // printint tuples to terminal
+        // for (var i = 0; i < resultTest.length; i++) {
+        //     out.println (tables[i]);
+        //     for (var j = 0; j < resultTest[i].length; j++) {
+        //         for (var k = 0; k < resultTest[i][j].length; k++) {
+        //             out.print (resultTest[i][j][k] + ",");
+        //         } // for
+        //         out.println ();
+        //     } // for
+        //     out.println ();
+        // } // for
+
     } // main
 
 } // TestTupleGenerator
