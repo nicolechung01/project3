@@ -123,13 +123,44 @@ public class LinHashMap <K, V>
      * Return a set containing all the entries as pairs of keys and values.
      * @return  the set view of the map
      */
-    public Set <Map.Entry <K, V>> entrySet ()
+    public Set <Entry <K, V>> entrySet ()
     {
-        var enSet = new HashSet <Map.Entry <K, V>> ();
+        var enSet = new HashSet <Entry <K, V>> ();
 
         //  T O   B E   I M P L E M E N T E D
+        //called on a map object and then inf
+        for (int i = 0; i < size(); i++) {
+           //iterate through the values in the has map and returns them as a set\
+            for (int j = 0; true; j++) {
+                V[] values = hTable.get(i).value;
+                K[] keys = hTable.get(i).key;
+                final K currentkey = keys[i];
+                if (values[j] != null) {
+                    boolean add;
+                    int finalI = i;
+                    Map.Entry<K,V> adding = new Map.Entry<K,V>() {
+                        @Override
+                        public K getKey() {
+                            return currentkey;
+                        }
 
-            
+                        @Override
+                        public V getValue() {
+                            return values[j];
+                        }
+
+                        @Override
+                        public V setValue(V value) {
+                            return null;
+                        }
+
+                    };
+                    add = enSet.add(adding);
+                } else {
+                    break;
+                }
+            }
+        }
         return enSet;
     } // entrySet
 
