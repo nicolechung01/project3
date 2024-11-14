@@ -111,22 +111,22 @@ public class TestTupleGenerator
             tableObjects.add(table);
         }
 
-        // // for printing tables to verify
-        // for (Table table: tableObjects) {
-        //     table.print();
-        // }
+        // for printing tables to verify
+        for (Table table: tableObjects) {
+            table.print();
+        }
         
         // printint tuples to terminal
-        // for (var i = 0; i < resultTest.length; i++) {
-        //     out.println (tables[i]);
-        //     for (var j = 0; j < resultTest[i].length; j++) {
-        //         for (var k = 0; k < resultTest[i][j].length; k++) {
-        //             out.print (resultTest[i][j][k] + ",");
-        //         } // for
-        //         out.println ();
-        //     } // for
-        //     out.println ();
-        // } // for
+        for (var i = 0; i < resultTest.length; i++) {
+            out.println (tables[i]);
+            for (var j = 0; j < resultTest[i].length; j++) {
+                for (var k = 0; k < resultTest[i][j].length; k++) {
+                    out.print (resultTest[i][j][k] + ",");
+                } // for
+                out.println ();
+            } // for
+            out.println ();
+        } // for
 
     } // main
 
