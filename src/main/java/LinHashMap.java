@@ -254,17 +254,31 @@ public class LinHashMap <K, V>
      * function 'h2'.  Increment 'isplit'.  If current split phase is complete,
      * reset 'isplit' to zero, and update the hash functions.
      */
-    private void split ()
-    {
+    private void split () {
         Bucket bucketcurrent = null;
         hTable.add(new Bucket());
-        Bucket.nKeys += 1;
-        if (isplit == 1){
-            for ()
-            Bucket.next ==
-        } else {
-            break;
+        keyCount += 1;
+        K[] newKeys;
+        for (int i = 0; i < hTable.size(); i++) {
+            newKeys = hTable.key
         }
+        for (int i = 0; i < hTable.size(); i++)
+            if ((4 <= hTable.get(i).value.length()) || (loadFactor() > THRESHOLD)) {
+                isplit = i;
+                while (isplit != 0) {
+                    K[] currentkey = hTable.get(isplit).key;
+                    for (int j = 0; i < size(); i++) {
+                        V[] currentValues = hTable.get(i).value;
+                        findRightBucket();
+
+                    }
+
+                }
+                isplit = 0;
+            } else {
+
+            }
+    }
         out.println ("split: bucket chain " + isplit);
 
         //  T O   B E   I M P L E M E N T E D
