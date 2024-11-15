@@ -246,6 +246,23 @@ public class LinHashMap <K, V>
      */
     private void split () {
         int count = 0;
+        Bucket bucketcurrent1 = hTable.get(isplit);
+        Bucket newOne = new Bucket();
+
+        List<Bucket> hTableCopy = new ArrayList<>(hTable);
+
+        //adds the new bucket to the copy table
+        hTableCopy.add(newOne);
+        keyCount++;
+
+        //hash values to be fixed
+        List<Entry<K,V>> hashfixer = new ArrayList<>();
+        for (Entry<K,V> entry: hTableCopy.get(isplit)){
+            int replaceHash = h2(entry.getKey());
+
+        }
+
+         /*
         if (hTable.get(isplit).key(3) != null){
             hTable.add(new Bucket());
             keyCount += 1;
@@ -276,8 +293,16 @@ public class LinHashMap <K, V>
         }
         isplit = (isplit + 1) % keyCount;
 
-        isplit = 0;
+        //added this to make sure that the value reset after
+        // all the values are incremented through
+        */
+        if (isplit == keyCount){
+            isplit = 0;
+        }
+
+         */
         out.println ("split: bucket chain " + isplit);
+
 
         //  T O   B E   I M P L E M E N T E D
 
