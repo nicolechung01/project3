@@ -258,17 +258,19 @@ public class LinHashMap <K, V>
         hTable.add(new Bucket());
         keyCount += 1;
         Bucket bucketCurrent = hTable.get(isplit);
-        List<LinHashMap<K, V>> newKeys = (List<LinHashMap<K, V>>) new ArrayList<K>(0);
+        int newLoc = 0;
+        List<LinHashMap<K, V>.Bucket> newKeys = (List<LinHashMap<K, V>.Bucket>) new ArrayList<K>(0);
         for (int i = 0; i < hTable.size(); i++) {
-            if ((Boolean) hTable.get(i).key[i]) {
-                int newLoc = h2(hTable.get(i).key[i]);
+            if (hTable.get(i).key[i] != null) {
+                newLoc = h2(hTable.get(i).key[i]);
+            } else {
+                continue;
             }
             if(isplit == newLoc){
                 newKeys.add((LinHashMap<K, V>.Bucket) hTable.get(i).key[i]);
             } else {
                 for (int j = 0; j < 4; j++){
-                     Boolean v = (Boolean) hTable.get(i).value[j];
-                    if (v){
+                    if (hTable.get(i).value[j] != null){
                         hTable.get(newLoc).add(hTable.get(i).key[i], hTable.get(i).value[j]);
                     }
                 }
@@ -277,11 +279,6 @@ public class LinHashMap <K, V>
             newKeys.add(hTable.get(i));
         }
         isplit = (isplit + 1) % keyCount;
-        for (int i = 0; i < newKeys.size(); i++){
-            for (int j = 0; j < 4; j++){
-                put(newKeys.get(i).key[i],newKeys.get(i).value[j]);
-            }
-        }
 
         isplit = 0;
         out.println ("split: bucket chain " + isplit);
