@@ -255,18 +255,18 @@ public class LinHashMap <K, V>
      * reset 'isplit' to zero, and update the hash functions.
      */
     private void split () {
-        Bucket bucketcurrent = null;
         hTable.add(new Bucket());
         keyCount += 1;
-        List<Map.Entry<K, V>> newKeys = (List<Entry<K, V>>) new ArrayList<K>(0);
+        Bucket bucketcurrent = hTable.get(isplit);
+        List<LinHashMap<K, V>.Bucket> newKeys = (List<LinHashMap<K, V>.Bucket>) new ArrayList<K>(0);
         for (int i = 0; i < hTable.size(); i++) {
             int newLoc = h2(hTable.get(i).key[i]);
             if(isplit == newLoc){
-                newKeys.add((Entry<K, V>) hTable.get(i).key[i]);
+                newKeys.add((LinHashMap<K, V>.Bucket) hTable.get(i).key[i]);
             } else {
-                hTable.get(newLoc).add(hTable.get(i).key[i]);
+                hTable.get(newLoc).add(hTable.get(i).key[i],hTable.get(i).value[i]);
             }
-            newKeys.add(h2(hTable.get(i).key[i]));
+            newKeys.add(hTable.get(i));
         }
         isplit = (isplit + 1) % keyCount;
 
