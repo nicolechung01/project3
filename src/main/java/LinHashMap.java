@@ -129,9 +129,9 @@ public class LinHashMap <K, V>
 
         //  T O   B E   I M P L E M E N T E D
         //called on a map object and then inf
-        for (Entry<K,V> values: hTable){
+        for (Bucket values: hTable){
             if (values != null){
-                enSet.add(values);
+                enSet.add((Entry<K, V>) values);
             }
         }
         return enSet;
