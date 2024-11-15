@@ -129,19 +129,9 @@ public class LinHashMap <K, V>
 
         //  T O   B E   I M P L E M E N T E D
         //called on a map object and then inf
-        for (int i = 0; i < size(); i++) {
-           //iterate through the values in the has map and returns them as a set\
-            for (int j = 0; true; j++) {
-                V[] values = hTable.get(i).value;
-                K[] keys = hTable.get(i).key;
-                K currentkey = keys[i];
-                V currentvalue = values[j];
-                if (values[j] != null) {
-                    boolean add;
-                    add = enSet.add(new enSetHelper<>(currentkey,currentvalue));
-                } else {
-                    break;
-                }
+        for (Entry<K,V> values: hTable){
+            if (values != null){
+                enSet.add(values);
             }
         }
         return enSet;
