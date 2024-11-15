@@ -134,7 +134,7 @@ public class LinHashMap <K, V>
             for (int j = 0; true; j++) {
                 V[] values = hTable.get(i).value;
                 K[] keys = hTable.get(i).key;
-                final K currentkey = keys[i];
+                K currentkey = keys[i];
                 if (values[j] != null) {
                     boolean add;
                     int finalI = i;
@@ -155,7 +155,7 @@ public class LinHashMap <K, V>
                         }
 
                     };
-                    add = enSet.add(adding);
+                    add = enSet.add(Map.Entry<currentkey, values[j]>);
                 } else {
                     break;
                 }
@@ -164,6 +164,31 @@ public class LinHashMap <K, V>
         return enSet;
     } // entrySet
 
+    static class enSetHelper<K,V> implements Map.Entry<K,V> {
+        final K ekey;
+        final V evalue;
+
+        enSetHelper(K key, V value){
+            this.ekey = key;
+            this.evalue = value;
+        }
+
+        @Override
+        public K getKey() {
+            return key;
+        }
+
+        @Override
+        public V getValue() {
+            return value;
+        }
+
+        @Override
+        public V setValue(V value) {
+            return null;
+        }
+
+    }
     /********************************************************************************
      * Given the key, look up the value in the hash table.
      * @param key  the key used for look up
@@ -248,6 +273,22 @@ public class LinHashMap <K, V>
      */
     private void split ()
     {
+        Bucket bucketcurrent = null;
+        for (int i = 0; i < size(); i++){
+        if (hTable.get(i).next != null) {
+            continue;
+        } else {
+            hTable.add(i+1) = new Bucket();
+        }
+    }
+        hTable.add(new Bucket());
+        Bucket.nKeys += 1;
+        if (isplit == 1){
+            for ()
+            Bucket.next ==
+        } else {
+            break;
+        }
         out.println ("split: bucket chain " + isplit);
 
         //  T O   B E   I M P L E M E N T E D
