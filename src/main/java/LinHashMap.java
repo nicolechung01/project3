@@ -135,27 +135,10 @@ public class LinHashMap <K, V>
                 V[] values = hTable.get(i).value;
                 K[] keys = hTable.get(i).key;
                 K currentkey = keys[i];
+                V currentvalue = values[j];
                 if (values[j] != null) {
                     boolean add;
-                    int finalI = i;
-                    Map.Entry<K,V> adding = new Map.Entry<K,V>() {
-                        @Override
-                        public K getKey() {
-                            return currentkey;
-                        }
-
-                        @Override
-                        public V getValue() {
-                            return values[j];
-                        }
-
-                        @Override
-                        public V setValue(V value) {
-                            return null;
-                        }
-
-                    };
-                    add = enSet.add(Map.Entry<currentkey, values[j]>);
+                    add = enSet.add(new enSetHelper<>(currentkey,currentvalue));
                 } else {
                     break;
                 }
@@ -274,13 +257,6 @@ public class LinHashMap <K, V>
     private void split ()
     {
         Bucket bucketcurrent = null;
-        for (int i = 0; i < size(); i++){
-        if (hTable.get(i).next != null) {
-            continue;
-        } else {
-            hTable.add(i+1) = new Bucket();
-        }
-    }
         hTable.add(new Bucket());
         Bucket.nKeys += 1;
         if (isplit == 1){
