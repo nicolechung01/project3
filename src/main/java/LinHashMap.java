@@ -147,7 +147,7 @@ public class LinHashMap <K, V>
         return enSet;
     } // entrySet
 
-    static class enSetHelper<K,V> implements Map.Entry<K,V> {
+    static class enSetHelper<K,V> implements Entry<K,V> {
         final K ekey;
         final V evalue;
 
@@ -158,12 +158,12 @@ public class LinHashMap <K, V>
 
         @Override
         public K getKey() {
-            return key;
+            return this.ekey;
         }
 
         @Override
         public V getValue() {
-            return value;
+            return this.evalue;
         }
 
         @Override
@@ -258,27 +258,19 @@ public class LinHashMap <K, V>
         Bucket bucketcurrent = null;
         hTable.add(new Bucket());
         keyCount += 1;
-        K[] newKeys;
+        List<Map.Entry<K, V>> newKeys = (List<Entry<K, V>>) new ArrayList<K>(0);
         for (int i = 0; i < hTable.size(); i++) {
-            newKeys = hTable.key
-        }
-        for (int i = 0; i < hTable.size(); i++)
-            if ((4 <= hTable.get(i).value.length()) || (loadFactor() > THRESHOLD)) {
-                isplit = i;
-                while (isplit != 0) {
-                    K[] currentkey = hTable.get(isplit).key;
-                    for (int j = 0; i < size(); i++) {
-                        V[] currentValues = hTable.get(i).value;
-                        findRightBucket();
-
-                    }
-
-                }
-                isplit = 0;
+            int newLoc = h2(hTable.get(i).key[i]);
+            if(isplit == newLoc){
+                newKeys.add((Entry<K, V>) hTable.get(i).key[i]);
             } else {
-
+                hTable.get(newLoc).add(hTable.get(i).key[i]);
             }
-    }
+            newKeys.add(h2(hTable.get(i).key[i]));
+        }
+        isplit = (isplit + 1) % keyCount;
+
+        isplit = 0;
         out.println ("split: bucket chain " + isplit);
 
         //  T O   B E   I M P L E M E N T E D
