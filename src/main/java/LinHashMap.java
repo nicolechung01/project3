@@ -280,7 +280,11 @@ public class LinHashMap <K, V>
         // increment the split pointer
         isplit = (isplit + 1) % keyCount;
 
+        if (isplit == keyCount){
+            isplit = 0;
         }
+
+        out.println ("split: bucket chain " + isplit);
 
          /*
         if (hTable.get(isplit).key(3) != null){
@@ -316,12 +320,7 @@ public class LinHashMap <K, V>
         //added this to make sure that the value reset after
         // all the values are incremented through
         */
-        if (isplit == keyCount){
-            isplit = 0;
-        }
 
-         */
-        out.println ("split: bucket chain " + isplit);
 
 
         //  T O   B E   I M P L E M E N T E D
