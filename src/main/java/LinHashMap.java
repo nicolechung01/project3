@@ -256,18 +256,29 @@ public class LinHashMap <K, V>
         keyCount++;
 
         //hash values to be fixed
-        List<Entry<K,V>> hashfixer = new ArrayList<>();
-        Iterator<Bucket> iterator = hTable.get(isplit).iterator();
+        List<Bucket> hashfixer = new ArrayList<>(); //entries that have yet to be handled
+        Iterator<Bucket> iterator = (Iterator<Bucket>) ((Collection<?>) hTable.get(isplit)).iterator();
 
         //Entry<K,V> entry: hTableCopy.get(isplit)
 
         while (iterator.hasNext()){
             Bucket entry = iterator.next(); 
-            int replaceHash = h2(entry.getKey());
+            int replaceHash = h2(entry.key);
             if (replaceHash == isplit){
                 continue;
             }
             bucketcurrent1.add(entry);
+            hashfixer.add((entry);
+        }
+            //removing og entries from bucket
+        Iterator<Bucket> iterator2= (Iterator<Bucket>) ((Collection<?>) hTable.get(isplit)).iterator();
+        while (iterator2.hasNext()){
+            Bucket entry = iterator.next();
+            bucketcurrent1.remove(entry); // need to remove past entries
+        }
+
+        // increment the split pointer
+        isplit = (isplit + 1) % keyCount;
 
         }
 
