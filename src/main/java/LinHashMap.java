@@ -128,12 +128,15 @@ public class LinHashMap <K, V>
         var enSet = new HashSet <Entry <K, V>> ();
 
         //  T O   B E   I M P L E M E N T E D
-        //called on a map object and then inf
-        for (Bucket values: hTable){
-            if (values != null){
-                enSet.add((Entry<K, V>) values);
+      
+        for (Bucket bucket : hTable) { // iterate through each bucket
+            for (Bucket b = bucket; b != null; b = b.next) { // iterate through each node of each bucket's list
+                for (int i = 0; i < b.nKeys; i++) {
+                    enSet.add(new AbstractMap.SimpleEntry<>(b.key[i], b.value[i])); // add entry with key and value of each bucket node
+                }
             }
         }
+        
         return enSet;
     } // entrySet
 
