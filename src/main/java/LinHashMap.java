@@ -246,7 +246,7 @@ public class LinHashMap <K, V>
      */
     private void split () {
         int count = 0;
-        Bucket bucketcurrent1 = hTable.get(isplit);
+        List<Bucket> bucketcurrent1 = new ArrayList<>((Collection) hTable.get(isplit));
         Bucket newOne = new Bucket();
 
         List<Bucket> hTableCopy = new ArrayList<>(hTable);
@@ -257,8 +257,17 @@ public class LinHashMap <K, V>
 
         //hash values to be fixed
         List<Entry<K,V>> hashfixer = new ArrayList<>();
-        for (Entry<K,V> entry: hTableCopy.get(isplit)){
+        Iterator<Bucket> iterator = hTable.get(isplit).iterator();
+
+        //Entry<K,V> entry: hTableCopy.get(isplit)
+
+        while (iterator.hasNext()){
+            Bucket entry = iterator.next(); 
             int replaceHash = h2(entry.getKey());
+            if (replaceHash == isplit){
+                continue;
+            }
+            bucketcurrent1.add(entry);
 
         }
 
