@@ -268,7 +268,7 @@ public class LinHashMap <K, V>
                 continue;
             }
             bucketcurrent1.add(entry);
-            hashfixer.add((entry);
+            hashfixer.add(entry);
         }
             //removing og entries from bucket
         Iterator<Bucket> iterator2= (Iterator<Bucket>) ((Collection<?>) hTable.get(isplit)).iterator();
