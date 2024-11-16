@@ -95,7 +95,7 @@ public class TestTupleGenerator
         for (var i = 0; i < resultTest.length; i++) { // iterate through each table
             // getting table meta data
             String tableName = tables[i];
-            String[] attribute = tableAttributes[i];
+            String[] attribute = tableAttributes[i][0].split(" ");
             Class[] domain = tableDomains[i];
             String[] key = tableKeys[i];
             // creating list of rows for each table
