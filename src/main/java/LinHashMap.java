@@ -128,15 +128,12 @@ public class LinHashMap <K, V>
         var enSet = new HashSet <Entry <K, V>> ();
 
         //  T O   B E   I M P L E M E N T E D
-      
-        for (Bucket bucket : hTable) { // iterate through each bucket
-            for (Bucket b = bucket; b != null; b = b.next) { // iterate through each node of each bucket's list
-                for (int i = 0; i < b.nKeys; i++) {
-                    enSet.add(new AbstractMap.SimpleEntry<>(b.key[i], b.value[i])); // add entry with key and value of each bucket node
-                }
+        //called on a map object and then inf
+        for (Bucket values: hTable){
+            if (values != null){
+                enSet.add((Entry<K, V>) values);
             }
         }
-        
         return enSet;
     } // entrySet
 
@@ -249,10 +246,11 @@ public class LinHashMap <K, V>
      */
     private void split () {
         int count = 0;
-        List<Bucket> bucketcurrent1 = new ArrayList<>((Collection) hTable.get(isplit));
+        List<Bucket> bucketCurrent1 = hTable;
         Bucket newOne = new Bucket();
 
         List<Bucket> hTableCopy = new ArrayList<>(hTable);
+        var hTable = entrySet();
 
         //adds the new bucket to the copy table
         hTableCopy.add(newOne);
@@ -260,24 +258,33 @@ public class LinHashMap <K, V>
 
         //hash values to be fixed
         List<Bucket> hashfixer = new ArrayList<>(); //entries that have yet to be handled
-        Iterator<Bucket> iterator = (Iterator<Bucket>) ((Collection<?>) hTable.get(isplit)).iterator();
+        Bucket collection = hTable.get(isplit);
+        // Iterator<Bucket> iterator = (Iterator<Bucket>) collection.iterator();
 
         //Entry<K,V> entry: hTableCopy.get(isplit)
 
-        while (iterator.hasNext()){
-            Bucket entry = iterator.next(); 
+        int i = isplit;
+        while (i < hTableCopy.size()){
+            for (Bucket bucket : hTableCopy) { // iterate through each bucket
+                for (Bucket b = bucket; b != null; b = b.next) { // iterate through each node of each bucket's list
+                    for (int j = 0; j < b.nKeys; j++) {
+                        bucketCurrent1.add(i); // add entry with key and value of each bucket node
+                    }
+                }
+            }
+            Bucket entry = hTableCopy.get(i);
             int replaceHash = h2(entry.key);
             if (replaceHash == isplit){
                 continue;
             }
-            bucketcurrent1.add(entry);
+            bucketCurrent1.add(entry);
             hashfixer.add(entry);
         }
             //removing og entries from bucket
         Iterator<Bucket> iterator2= (Iterator<Bucket>) ((Collection<?>) hTable.get(isplit)).iterator();
         while (iterator2.hasNext()){
             Bucket entry = iterator.next();
-            bucketcurrent1.remove(entry); // need to remove past entries
+            bucketCurrent1.remove(entry); // need to remove past entries
         }
 
         // increment the split pointer
