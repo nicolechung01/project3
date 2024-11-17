@@ -250,7 +250,7 @@ public class LinHashMap <K, V>
         Bucket newOne = new Bucket();
 
         List<Bucket> hTableCopy = new ArrayList<>(hTable);
-        var hTable = entrySet();
+        var buckets = entrySet();
 
         //adds the new bucket to the copy table
         hTableCopy.add(newOne);
@@ -262,13 +262,21 @@ public class LinHashMap <K, V>
         // Iterator<Bucket> iterator = (Iterator<Bucket>) collection.iterator();
 
         //Entry<K,V> entry: hTableCopy.get(isplit)
+        for (Entry<K,V> entry: buckets){
+            if ((h2(entry.getKey()) % 2 == 0){
+                bucketCurrent1.add(entry.getKey(), entry.getValue());
+                hashfixer.add(entry.getKey);
+            }
+        }
+
 
         int i = isplit;
         while (i < hTableCopy.size()){
             for (Bucket bucket : hTableCopy) { // iterate through each bucket
                 for (Bucket b = bucket; b != null; b = b.next) { // iterate through each node of each bucket's list
                     for (int j = 0; j < b.nKeys; j++) {
-                        bucketCurrent1.add(i); // add entry with key and value of each bucket node
+                        bucketCurrent1.add(bucket);// add entry with key and value of each bucket node
+
                     }
                 }
             }
@@ -282,9 +290,11 @@ public class LinHashMap <K, V>
         }
             //removing og entries from bucket
         Iterator<Bucket> iterator2= (Iterator<Bucket>) ((Collection<?>) hTable.get(isplit)).iterator();
-        while (iterator2.hasNext()){
-            Bucket entry = iterator.next();
+        int i = 0;
+        while (i < hTableCopy.size()){
+            Bucket entry = hTableCopy.get(i);
             bucketCurrent1.remove(entry); // need to remove past entries
+            i++;
         }
 
         // increment the split pointer
