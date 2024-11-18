@@ -275,7 +275,7 @@ public class LinHashMap <K, V>
                 if (h2(entry.key[i]) == isplit) {
                     continue;
                 } else {
-                    bucket1.add(entry.key[i], entry.value[i]);
+                    bucket1.add(entry.key[i], entry.value[i]); // add to new bucket
                 }
             }
             isplit++;
