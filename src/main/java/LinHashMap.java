@@ -129,9 +129,11 @@ public class LinHashMap <K, V>
 
         //  T O   B E   I M P L E M E N T E D
         //called on a map object and then inf
-        for (Bucket values: hTable){
-            if (values != null){
-                enSet.add((Entry<K, V>) values);
+        for (Bucket bucket : hTable) { // iterate through each bucket
+            for (Bucket b = bucket; b != null; b = b.next) { // iterate through each node of each bucket's list
+                for (int i = 0; i < b.nKeys; i++) {
+                    enSet.add(new AbstractMap.SimpleEntry<>(b.key[i], b.value[i])); // add entry with key and value of each bucket node
+                }
             }
         }
         return enSet;
@@ -265,59 +267,22 @@ public class LinHashMap <K, V>
             }
         }
         */
-        int i = 0;
-        while (i < hTable.size()){
-            for (Bucket bucket : bucketCurrent1) {
-                for (Bucket b = bucket; b != null; b = b.next) {
-                    for (int j = 0; j < b.nKeys; j++) {
-                        var entry = bucketCurrent1.get(i);
-                        int rH = h2(entry.key) % keyCount;
-                        if (rH == isplit){
-                            hTableCopy.get(i).add(entry.key[i], entry.value[i]);
-                            continue;
-                        }
-                        if (b.nKeys >= 4){
-                            Bucket bucket1 = new Bucket();
-                            hTableCopy.add(bucket1);
-                            hTableCopy.get(isplit-1).add(entry.key[rH -1],entry.value[rH-1]);
-                        }
-                        Bucket bucket2 = new Bucket();
-                        hTableCopy.add(bucket2);
-                        hTableCopy.get(isplit).add(entry.key[rH], entry.value[j]);
-                        temp.add(entry);
-                        bucketCurrent1.add(bucket);//
-
-
-                    }
-                    isplit++;
+        if (loadFactor() > THRESHOLD ){
+            var entry = bucketCurrent1.get(isplit);
+            Bucket bucket1 = new Bucket();
+            bucketCurrent1.add(bucket1);
+            for (int i = 0; i < entry.nKeys; i++){
+                if (h2(entry.key[i]) == isplit) {
+                    continue;
+                } else {
+                    bucket1.add(entry.key[i], entry.value[i]);
                 }
             }
-        }
-
-        int lm = isplit;
-        for (Bucket entry: hTable ){
-            int replaceHash = h2(entry.key[lm]);
-            if (replaceHash == isplit){
-                hTableCopy.get(isplit).add(entry.key[isplit],entry.value[isplit]);
-            } else {
-                hTableCopy.get(replaceHash).add(entry.key[replaceHash],entry.value[isplit]);
+            isplit++;
+            if (isplit >= hTable.size()){
+                isplit = 0;
             }
-            lm++;
         }
-        //removing og entries from bucket
-        //Iterator<Bucket> iterator2= (Iterator<Bucket>) ((Collection<?>) hTable.get(isplit)).iterator();
-        int inte = 0;
-        while (inte < hTableCopy.size()){
-            Bucket entry = hTableCopy.get(inte);
-            bucketCurrent1.remove(entry); // need to remove past entries
-            inte++;
-        }
-
-
-        if (isplit == keyCount){
-            isplit = 0;
-        }
-
 
         out.println ("split: bucket chain " + isplit);
 
