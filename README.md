@@ -2,7 +2,7 @@
 
 Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
 
-Names: John Adtinkson, Nicole Chung, Jenna Odom
+Names: John Atkinson, Nicole Chung, Jenna Odom
 
 ## Compile and Run Code
 
@@ -24,6 +24,7 @@ javac -d $BIN_DIR -sourcepath $SRC_DIR -cp "$LIB_DIR/*" $SRC_DIR/*.java
 
 ##### Run TestTupleGenerator
 java -cp "$BIN_DIR:$LIB_DIR/*" main.java.TestTupleGenerator
+
 
 ## Folder Structure
 
