@@ -2,6 +2,12 @@
 
 Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
 
+Names: John Adtinkson, Nicole Chung, Jenna Odom
+
+## Compile and Run Code
+
+Please run the bash file.
+
 ## Folder Structure
 
 The workspace contains two folders by default, where:
