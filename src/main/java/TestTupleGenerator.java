@@ -166,9 +166,9 @@ public class TestTupleGenerator
         for (String indexType : indexTypes.keySet()) {
             Map<KeyType, Comparable[]> index = indexTypes.get(indexType);
 
-           //       for (int tupleCount : tupleCounts) {                                                                                                                                                                                                                
-            //          System.out.println("\n--- Testing " + indexType + " with " + tupleCount + " tuples ---");                                                                                                                                                       
-            System.out.println("\nTesting with index type: " + indexType);
+        for (int tupleCount : tupleCounts) {                                                                                                                                                                                                                
+            System.out.println("\n--- Testing " + indexType + " with " + tupleCount + " tuples ---");                                                                                                                                                       
+   //         System.out.println("\nTesting with index type: " + indexType);
 
                 // Measure time for SELECT operation                                                                                                                                                                                                                    
                 long startSelect = System.currentTimeMillis();
@@ -181,7 +181,7 @@ public class TestTupleGenerator
                 Table resultJoin = studentTable.join("id", "studId", transcriptTable);
                 long endJoin = System.currentTimeMillis();
                 System.out.println("Join operation took: " + (endJoin - startJoin) + " ms");
-                //          }                                                                                                                                                                                                                                           
+            }                                                                                                                                                                                                                                           
         }
     } // main
 
