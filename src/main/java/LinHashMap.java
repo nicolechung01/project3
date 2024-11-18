@@ -249,60 +249,75 @@ public class LinHashMap <K, V>
         List<Bucket> bucketCurrent1 = hTable;
         Bucket newOne = new Bucket();
 
-        List<Bucket> hTableCopy = new ArrayList<>(hTable);
-        var buckets = entrySet();
+        List<Bucket> hTableCopy = new ArrayList<>(hTable.size());
+        // var buckets = entrySet();
 
         //adds the new bucket to the copy table
-        hTableCopy.add(newOne);
-        keyCount++;
+        List<Bucket> temp = new ArrayList<>();
 
-        //hash values to be fixed
-        List<Bucket> hashfixer = new ArrayList<>(); //entries that have yet to be handled
-        Bucket collection = hTable.get(isplit);
         // Iterator<Bucket> iterator = (Iterator<Bucket>) collection.iterator();
-
+        /*
         //Entry<K,V> entry: hTableCopy.get(isplit)
         for (Entry<K,V> entry: buckets){
             if ((h2(entry.getKey()) % 2 == 0){
-                bucketCurrent1.add(entry.getKey(), entry.getValue());
+                bucketCurrent1.put(entry.getKey(), entry.getValue());
                 hashfixer.add(entry.getKey);
             }
         }
-
-
-        int i = isplit;
-        while (i < hTableCopy.size()){
-            for (Bucket bucket : hTableCopy) { // iterate through each bucket
-                for (Bucket b = bucket; b != null; b = b.next) { // iterate through each node of each bucket's list
+        */
+        int i = 0;
+        while (i < hTable.size()){
+            for (Bucket bucket : bucketCurrent1) {
+                for (Bucket b = bucket; b != null; b = b.next) {
                     for (int j = 0; j < b.nKeys; j++) {
-                        bucketCurrent1.add(bucket);// add entry with key and value of each bucket node
+                        var entry = bucketCurrent1.get(i);
+                        int rH = h2(entry.key) % keyCount;
+                        if (rH == isplit){
+                            hTableCopy.get(i).add(entry.key[i], entry.value[i]);
+                            continue;
+                        }
+                        if (b.nKeys >= 4){
+                            Bucket bucket1 = new Bucket();
+                            hTableCopy.add(bucket1);
+                            hTableCopy.get(isplit-1).add(entry.key[rH -1],entry.value[rH-1]);
+                        }
+                        Bucket bucket2 = new Bucket();
+                        hTableCopy.add(bucket2);
+                        hTableCopy.get(isplit).add(entry.key[rH], entry.value[j]);
+                        temp.add(entry);
+                        bucketCurrent1.add(bucket);//
+
 
                     }
+                    isplit++;
                 }
             }
-            Bucket entry = hTableCopy.get(i);
-            int replaceHash = h2(entry.key);
-            if (replaceHash == isplit){
-                continue;
-            }
-            bucketCurrent1.add(entry);
-            hashfixer.add(entry);
-        }
-            //removing og entries from bucket
-        Iterator<Bucket> iterator2= (Iterator<Bucket>) ((Collection<?>) hTable.get(isplit)).iterator();
-        int i = 0;
-        while (i < hTableCopy.size()){
-            Bucket entry = hTableCopy.get(i);
-            bucketCurrent1.remove(entry); // need to remove past entries
-            i++;
         }
 
-        // increment the split pointer
-        isplit = (isplit + 1) % keyCount;
+        int lm = isplit;
+        for (Bucket entry: hTable ){
+            int replaceHash = h2(entry.key[lm]);
+            if (replaceHash == isplit){
+                hTableCopy.get(isplit).add(entry.key[isplit],entry.value[isplit]);
+            } else {
+                hTableCopy.get(replaceHash).add(entry.key[replaceHash],entry.value[isplit]);
+            }
+            lm++;
+        }
+        //removing og entries from bucket
+        //Iterator<Bucket> iterator2= (Iterator<Bucket>) ((Collection<?>) hTable.get(isplit)).iterator();
+        int inte = 0;
+        while (inte < hTableCopy.size()){
+            Bucket entry = hTableCopy.get(inte);
+            bucketCurrent1.remove(entry); // need to remove past entries
+            inte++;
+        }
+
 
         if (isplit == keyCount){
             isplit = 0;
         }
+
 
         out.println ("split: bucket chain " + isplit);
 
